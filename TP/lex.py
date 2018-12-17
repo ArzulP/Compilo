@@ -8,7 +8,8 @@ reserved_words = (
 
 tokens = (
 	'NUMBER',
-	'IDENTIFIER'
+	'IDENTIFIER',
+	'NEWLINE'
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
 literals = ','
@@ -28,9 +29,10 @@ def t_IDENTIFIER(t):
 		t.type = t.value.upper()
 	return t
 	
-def t_newline(t):
+def t_NEWLINE(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
+	return t
 
 t_ignore  = ' \t'
 
