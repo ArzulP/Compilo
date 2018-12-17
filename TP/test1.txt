@@ -1,0 +1,3 @@
+mov eax, ebx
+push eax
+mov eax, 2
