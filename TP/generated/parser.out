@@ -6,29 +6,33 @@ Rule 0     S' -> programme
 Rule 1     programme -> statement
 Rule 2     programme -> statement NEWLINE programme
 Rule 3     statement -> MOV varExpression , expression
-Rule 4     statement -> PUSH expression
-Rule 5     statement -> POP expression
-Rule 6     varExpression -> IDENTIFIER
-Rule 7     expression -> NUMBER
-Rule 8     expression -> IDENTIFIER
+Rule 4     statement -> ADD_OP varExpression , expression
+Rule 5     statement -> INC_OP varExpression
+Rule 6     statement -> PUSH expression
+Rule 7     statement -> POP expression
+Rule 8     varExpression -> IDENTIFIER
+Rule 9     expression -> NUMBER
+Rule 10    expression -> IDENTIFIER
 
 Terminals, with rules where they appear
 
-,                    : 3
-IDENTIFIER           : 6 8
+,                    : 3 4
+ADD_OP               : 4
+IDENTIFIER           : 8 10
+INC_OP               : 5
 MOV                  : 3
 NEWLINE              : 2
-NUMBER               : 7
-POP                  : 5
-PUSH                 : 4
+NUMBER               : 9
+POP                  : 7
+PUSH                 : 6
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 3 4 5
+expression           : 3 4 6 7
 programme            : 2 0
 statement            : 1 2
-varExpression        : 3
+varExpression        : 3 4 5
 
 Parsing method: LALR
 
@@ -38,12 +42,16 @@ state 0
     (1) programme -> . statement
     (2) programme -> . statement NEWLINE programme
     (3) statement -> . MOV varExpression , expression
-    (4) statement -> . PUSH expression
-    (5) statement -> . POP expression
+    (4) statement -> . ADD_OP varExpression , expression
+    (5) statement -> . INC_OP varExpression
+    (6) statement -> . PUSH expression
+    (7) statement -> . POP expression
 
     MOV             shift and go to state 3
-    PUSH            shift and go to state 4
-    POP             shift and go to state 5
+    ADD_OP          shift and go to state 4
+    INC_OP          shift and go to state 5
+    PUSH            shift and go to state 6
+    POP             shift and go to state 7
 
     programme                      shift and go to state 1
     statement                      shift and go to state 2
@@ -60,124 +68,182 @@ state 2
     (2) programme -> statement . NEWLINE programme
 
     $end            reduce using rule 1 (programme -> statement .)
-    NEWLINE         shift and go to state 6
+    NEWLINE         shift and go to state 8
 
 
 state 3
 
     (3) statement -> MOV . varExpression , expression
-    (6) varExpression -> . IDENTIFIER
+    (8) varExpression -> . IDENTIFIER
 
-    IDENTIFIER      shift and go to state 8
+    IDENTIFIER      shift and go to state 10
 
-    varExpression                  shift and go to state 7
+    varExpression                  shift and go to state 9
 
 state 4
 
-    (4) statement -> PUSH . expression
-    (7) expression -> . NUMBER
-    (8) expression -> . IDENTIFIER
+    (4) statement -> ADD_OP . varExpression , expression
+    (8) varExpression -> . IDENTIFIER
 
-    NUMBER          shift and go to state 10
-    IDENTIFIER      shift and go to state 11
+    IDENTIFIER      shift and go to state 10
 
-    expression                     shift and go to state 9
+    varExpression                  shift and go to state 11
 
 state 5
 
-    (5) statement -> POP . expression
-    (7) expression -> . NUMBER
-    (8) expression -> . IDENTIFIER
+    (5) statement -> INC_OP . varExpression
+    (8) varExpression -> . IDENTIFIER
 
-    NUMBER          shift and go to state 10
-    IDENTIFIER      shift and go to state 11
+    IDENTIFIER      shift and go to state 10
 
-    expression                     shift and go to state 12
+    varExpression                  shift and go to state 12
 
 state 6
+
+    (6) statement -> PUSH . expression
+    (9) expression -> . NUMBER
+    (10) expression -> . IDENTIFIER
+
+    NUMBER          shift and go to state 14
+    IDENTIFIER      shift and go to state 15
+
+    expression                     shift and go to state 13
+
+state 7
+
+    (7) statement -> POP . expression
+    (9) expression -> . NUMBER
+    (10) expression -> . IDENTIFIER
+
+    NUMBER          shift and go to state 14
+    IDENTIFIER      shift and go to state 15
+
+    expression                     shift and go to state 16
+
+state 8
 
     (2) programme -> statement NEWLINE . programme
     (1) programme -> . statement
     (2) programme -> . statement NEWLINE programme
     (3) statement -> . MOV varExpression , expression
-    (4) statement -> . PUSH expression
-    (5) statement -> . POP expression
+    (4) statement -> . ADD_OP varExpression , expression
+    (5) statement -> . INC_OP varExpression
+    (6) statement -> . PUSH expression
+    (7) statement -> . POP expression
 
     MOV             shift and go to state 3
-    PUSH            shift and go to state 4
-    POP             shift and go to state 5
+    ADD_OP          shift and go to state 4
+    INC_OP          shift and go to state 5
+    PUSH            shift and go to state 6
+    POP             shift and go to state 7
 
     statement                      shift and go to state 2
-    programme                      shift and go to state 13
-
-state 7
-
-    (3) statement -> MOV varExpression . , expression
-
-    ,               shift and go to state 14
-
-
-state 8
-
-    (6) varExpression -> IDENTIFIER .
-
-    ,               reduce using rule 6 (varExpression -> IDENTIFIER .)
-
+    programme                      shift and go to state 17
 
 state 9
 
-    (4) statement -> PUSH expression .
+    (3) statement -> MOV varExpression . , expression
 
-    NEWLINE         reduce using rule 4 (statement -> PUSH expression .)
-    $end            reduce using rule 4 (statement -> PUSH expression .)
+    ,               shift and go to state 18
 
 
 state 10
 
-    (7) expression -> NUMBER .
+    (8) varExpression -> IDENTIFIER .
 
-    NEWLINE         reduce using rule 7 (expression -> NUMBER .)
-    $end            reduce using rule 7 (expression -> NUMBER .)
+    ,               reduce using rule 8 (varExpression -> IDENTIFIER .)
+    NEWLINE         reduce using rule 8 (varExpression -> IDENTIFIER .)
+    $end            reduce using rule 8 (varExpression -> IDENTIFIER .)
 
 
 state 11
 
-    (8) expression -> IDENTIFIER .
+    (4) statement -> ADD_OP varExpression . , expression
 
-    NEWLINE         reduce using rule 8 (expression -> IDENTIFIER .)
-    $end            reduce using rule 8 (expression -> IDENTIFIER .)
+    ,               shift and go to state 19
 
 
 state 12
 
-    (5) statement -> POP expression .
+    (5) statement -> INC_OP varExpression .
 
-    NEWLINE         reduce using rule 5 (statement -> POP expression .)
-    $end            reduce using rule 5 (statement -> POP expression .)
+    NEWLINE         reduce using rule 5 (statement -> INC_OP varExpression .)
+    $end            reduce using rule 5 (statement -> INC_OP varExpression .)
 
 
 state 13
+
+    (6) statement -> PUSH expression .
+
+    NEWLINE         reduce using rule 6 (statement -> PUSH expression .)
+    $end            reduce using rule 6 (statement -> PUSH expression .)
+
+
+state 14
+
+    (9) expression -> NUMBER .
+
+    NEWLINE         reduce using rule 9 (expression -> NUMBER .)
+    $end            reduce using rule 9 (expression -> NUMBER .)
+
+
+state 15
+
+    (10) expression -> IDENTIFIER .
+
+    NEWLINE         reduce using rule 10 (expression -> IDENTIFIER .)
+    $end            reduce using rule 10 (expression -> IDENTIFIER .)
+
+
+state 16
+
+    (7) statement -> POP expression .
+
+    NEWLINE         reduce using rule 7 (statement -> POP expression .)
+    $end            reduce using rule 7 (statement -> POP expression .)
+
+
+state 17
 
     (2) programme -> statement NEWLINE programme .
 
     $end            reduce using rule 2 (programme -> statement NEWLINE programme .)
 
 
-state 14
+state 18
 
     (3) statement -> MOV varExpression , . expression
-    (7) expression -> . NUMBER
-    (8) expression -> . IDENTIFIER
+    (9) expression -> . NUMBER
+    (10) expression -> . IDENTIFIER
 
-    NUMBER          shift and go to state 10
-    IDENTIFIER      shift and go to state 11
+    NUMBER          shift and go to state 14
+    IDENTIFIER      shift and go to state 15
 
-    expression                     shift and go to state 15
+    expression                     shift and go to state 20
 
-state 15
+state 19
+
+    (4) statement -> ADD_OP varExpression , . expression
+    (9) expression -> . NUMBER
+    (10) expression -> . IDENTIFIER
+
+    NUMBER          shift and go to state 14
+    IDENTIFIER      shift and go to state 15
+
+    expression                     shift and go to state 21
+
+state 20
 
     (3) statement -> MOV varExpression , expression .
 
     NEWLINE         reduce using rule 3 (statement -> MOV varExpression , expression .)
     $end            reduce using rule 3 (statement -> MOV varExpression , expression .)
+
+
+state 21
+
+    (4) statement -> ADD_OP varExpression , expression .
+
+    NEWLINE         reduce using rule 4 (statement -> ADD_OP varExpression , expression .)
+    $end            reduce using rule 4 (statement -> ADD_OP varExpression , expression .)
 

@@ -9,10 +9,20 @@ reserved_words = (
 tokens = (
 	'NUMBER',
 	'IDENTIFIER',
-	'NEWLINE'
+	'NEWLINE',
+	'ADD_OP',
+	'INC_OP'
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
 literals = ','
+
+def t_ADD_OP(t):
+	r'(add|sub)'
+	return t
+
+def t_INC_OP(t):
+	r'(inc|dec)'
+	return t
 
 def t_NUMBER(t):
 	r'\d+(\.\d+)?'

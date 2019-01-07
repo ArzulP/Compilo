@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "leftMOVleftPUSHleftPOPIDENTIFIER MOV NEWLINE NUMBER POP PUSH programme : statement  programme : statement NEWLINE programme statement :  MOV varExpression ',' expressionstatement :  PUSH expressionstatement :  POP expressionvarExpression : IDENTIFIERexpression : NUMBER\n        | IDENTIFIER "
+_lr_signature = "leftMOVleftPUSHleftPOPADD_OP IDENTIFIER INC_OP MOV NEWLINE NUMBER POP PUSH programme : statement  programme : statement NEWLINE programme statement :  MOV varExpression ',' expressionstatement :  ADD_OP varExpression ',' expressionstatement :  INC_OP varExpressionstatement :  PUSH expressionstatement :  POP expressionvarExpression : IDENTIFIERexpression : NUMBER\n        | IDENTIFIER "
     
-_lr_action_items = {'MOV':([0,6,],[3,3,]),'PUSH':([0,6,],[4,4,]),'POP':([0,6,],[5,5,]),'$end':([1,2,9,10,11,12,13,15,],[0,-1,-4,-7,-8,-5,-2,-3,]),'NEWLINE':([2,9,10,11,12,15,],[6,-4,-7,-8,-5,-3,]),'IDENTIFIER':([3,4,5,14,],[8,11,11,11,]),'NUMBER':([4,5,14,],[10,10,10,]),',':([7,8,],[14,-6,]),}
+_lr_action_items = {'MOV':([0,8,],[3,3,]),'ADD_OP':([0,8,],[4,4,]),'INC_OP':([0,8,],[5,5,]),'PUSH':([0,8,],[6,6,]),'POP':([0,8,],[7,7,]),'$end':([1,2,10,12,13,14,15,16,17,20,21,],[0,-1,-8,-5,-6,-9,-10,-7,-2,-3,-4,]),'NEWLINE':([2,10,12,13,14,15,16,20,21,],[8,-8,-5,-6,-9,-10,-7,-3,-4,]),'IDENTIFIER':([3,4,5,6,7,18,19,],[10,10,10,15,15,15,15,]),'NUMBER':([6,7,18,19,],[14,14,14,14,]),',':([9,10,11,],[18,-8,19,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'programme':([0,6,],[1,13,]),'statement':([0,6,],[2,2,]),'varExpression':([3,],[7,]),'expression':([4,5,14,],[9,12,15,]),}
+_lr_goto_items = {'programme':([0,8,],[1,17,]),'statement':([0,8,],[2,2,]),'varExpression':([3,4,5,],[9,11,12,]),'expression':([6,7,18,19,],[13,16,20,21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -30,9 +30,11 @@ _lr_productions = [
   ('programme -> statement','programme',1,'p_programme_statement','parser1.py',7),
   ('programme -> statement NEWLINE programme','programme',3,'p_programme_recursive','parser1.py',11),
   ('statement -> MOV varExpression , expression','statement',4,'p_expression_mov','parser1.py',15),
-  ('statement -> PUSH expression','statement',2,'p_expression_push','parser1.py',19),
-  ('statement -> POP expression','statement',2,'p_expression_pop','parser1.py',23),
-  ('varExpression -> IDENTIFIER','varExpression',1,'p_expression_var','parser1.py',27),
-  ('expression -> NUMBER','expression',1,'p_expression_num_or_var','parser1.py',31),
-  ('expression -> IDENTIFIER','expression',1,'p_expression_num_or_var','parser1.py',32),
+  ('statement -> ADD_OP varExpression , expression','statement',4,'p_expression_addOp','parser1.py',19),
+  ('statement -> INC_OP varExpression','statement',2,'p_expression_incOp','parser1.py',23),
+  ('statement -> PUSH expression','statement',2,'p_expression_push','parser1.py',27),
+  ('statement -> POP expression','statement',2,'p_expression_pop','parser1.py',31),
+  ('varExpression -> IDENTIFIER','varExpression',1,'p_expression_var','parser1.py',35),
+  ('expression -> NUMBER','expression',1,'p_expression_num_or_var','parser1.py',39),
+  ('expression -> IDENTIFIER','expression',1,'p_expression_num_or_var','parser1.py',40),
 ]

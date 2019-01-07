@@ -115,6 +115,16 @@ class OpNode(Node):
         
     def __repr__(self):
         return "%s (%s)" % (self.op, self.nbargs)
+
+class IncNode(Node):
+    type = 'inc'
+    def __init__(self, op, child):
+        Node.__init__(self)
+        self.child = child
+        self.op = op
+        
+    def __repr__(self):
+        return "%s %s" % (self.op ,repr(self.child))
     
 class PrintNode(Node):
     type = 'print'

@@ -15,6 +15,14 @@ def p_expression_mov(p):
     '''statement :  MOV varExpression ',' expression'''
     p[0] = AST.OpNode(p[1], [p[2], p[4]])
 
+def p_expression_addOp(p):
+    '''statement :  ADD_OP varExpression ',' expression'''
+    p[0] = AST.OpNode(p[1], [p[2], p[4]])
+
+def p_expression_incOp(p):
+    '''statement :  INC_OP varExpression'''
+    p[0] = AST.IncNode(p[1], p[2])
+
 def p_expression_push(p):
     '''statement :  PUSH expression'''
     p[0] = AST.PushNode(p[2])
