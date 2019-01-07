@@ -1,0 +1,212 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programme
+Rule 1     programme -> expression
+Rule 2     programme -> expression NEWLINE programme
+Rule 3     expression -> MOV expression , expression
+Rule 4     expression -> PUSH expression
+Rule 5     expression -> POP expression
+Rule 6     expression -> NUMBER
+Rule 7     expression -> IDENTIFIER
+
+Terminals, with rules where they appear
+
+,                    : 3
+IDENTIFIER           : 7
+MOV                  : 3
+NEWLINE              : 2
+NUMBER               : 6
+POP                  : 5
+PUSH                 : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 1 2 3 3 4 5
+programme            : 2 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programme
+    (1) programme -> . expression
+    (2) programme -> . expression NEWLINE programme
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    programme                      shift and go to state 1
+    expression                     shift and go to state 2
+
+state 1
+
+    (0) S' -> programme .
+
+
+
+state 2
+
+    (1) programme -> expression .
+    (2) programme -> expression . NEWLINE programme
+
+    $end            reduce using rule 1 (programme -> expression .)
+    NEWLINE         shift and go to state 8
+
+
+state 3
+
+    (3) expression -> MOV . expression , expression
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    expression                     shift and go to state 9
+
+state 4
+
+    (4) expression -> PUSH . expression
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    expression                     shift and go to state 10
+
+state 5
+
+    (5) expression -> POP . expression
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    expression                     shift and go to state 11
+
+state 6
+
+    (6) expression -> NUMBER .
+
+    NEWLINE         reduce using rule 6 (expression -> NUMBER .)
+    $end            reduce using rule 6 (expression -> NUMBER .)
+    ,               reduce using rule 6 (expression -> NUMBER .)
+
+
+state 7
+
+    (7) expression -> IDENTIFIER .
+
+    NEWLINE         reduce using rule 7 (expression -> IDENTIFIER .)
+    $end            reduce using rule 7 (expression -> IDENTIFIER .)
+    ,               reduce using rule 7 (expression -> IDENTIFIER .)
+
+
+state 8
+
+    (2) programme -> expression NEWLINE . programme
+    (1) programme -> . expression
+    (2) programme -> . expression NEWLINE programme
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    expression                     shift and go to state 2
+    programme                      shift and go to state 12
+
+state 9
+
+    (3) expression -> MOV expression . , expression
+
+    ,               shift and go to state 13
+
+
+state 10
+
+    (4) expression -> PUSH expression .
+
+    NEWLINE         reduce using rule 4 (expression -> PUSH expression .)
+    $end            reduce using rule 4 (expression -> PUSH expression .)
+    ,               reduce using rule 4 (expression -> PUSH expression .)
+
+
+state 11
+
+    (5) expression -> POP expression .
+
+    NEWLINE         reduce using rule 5 (expression -> POP expression .)
+    $end            reduce using rule 5 (expression -> POP expression .)
+    ,               reduce using rule 5 (expression -> POP expression .)
+
+
+state 12
+
+    (2) programme -> expression NEWLINE programme .
+
+    $end            reduce using rule 2 (programme -> expression NEWLINE programme .)
+
+
+state 13
+
+    (3) expression -> MOV expression , . expression
+    (3) expression -> . MOV expression , expression
+    (4) expression -> . PUSH expression
+    (5) expression -> . POP expression
+    (6) expression -> . NUMBER
+    (7) expression -> . IDENTIFIER
+
+    MOV             shift and go to state 3
+    PUSH            shift and go to state 4
+    POP             shift and go to state 5
+    NUMBER          shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+
+    expression                     shift and go to state 14
+
+state 14
+
+    (3) expression -> MOV expression , expression .
+
+    NEWLINE         reduce using rule 3 (expression -> MOV expression , expression .)
+    $end            reduce using rule 3 (expression -> MOV expression , expression .)
+    ,               reduce using rule 3 (expression -> MOV expression , expression .)
+

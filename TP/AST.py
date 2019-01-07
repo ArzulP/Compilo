@@ -121,14 +121,21 @@ class PrintNode(Node):
 
 class PushNode(Node):
     type = 'push'
+    def __init__(self, child):
+        Node.__init__(self)
+        self.child = child
+        
+    def __repr__(self):
+        return "push %s" % (repr(self.child))
 
 class PopNode(Node):
     type = 'pop'
-    
-class EntryNode(Node):
-    type = 'ENTRY'
-    def __init__(self):
-        Node.__init__(self, None)
+    def __init__(self, child):
+        Node.__init__(self)
+        self.child = child
+        
+    def __repr__(self):
+        return "pop %s" % (repr(self.child))
     
 def addToClass(cls):
     ''' D�corateur permettant d'ajouter la fonction d�cor�e en tant que m�thode
