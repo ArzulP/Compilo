@@ -3,7 +3,8 @@ import ply.lex as lex
 reserved_words = (
 	'mov',
 	'push',
-	'pop'
+	'pop',
+	'cmp'
 )
 
 tokens = (
@@ -11,10 +12,20 @@ tokens = (
 	'IDENTIFIER',
 	'NEWLINE',
 	'ADD_OP',
-	'INC_OP'
+	'INC_OP',
+	'COND_OP',
+	'JUMP_OP'
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
-literals = ','
+literals = ',', ':'
+
+def t_JUMP_OP(t):
+	r'(jump)\d*'
+	return t
+
+def t_COND_OP(t):
+	r'(je|jne|jge|jle|jg|jl)'
+	return t
 
 def t_ADD_OP(t):
 	r'(add|sub|imul)'
@@ -43,6 +54,9 @@ def t_NEWLINE(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
 	return t
+
+
+
 
 t_ignore  = ' \t'
 

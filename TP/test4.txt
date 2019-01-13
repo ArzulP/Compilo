@@ -1,0 +1,7 @@
+mov eax, 5
+jump1:
+inc eax
+cmp eax, 10
+jne jump1
+cmp eax, 15
+jle jump1

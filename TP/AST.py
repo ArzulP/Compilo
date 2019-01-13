@@ -146,6 +146,22 @@ class PopNode(Node):
         
     def __repr__(self):
         return "pop %s" % (repr(self.child))
+
+class JumpNode(Node):
+    type='jump'
+    def __init__(self, op, children):
+        Node.__init__(self, children)
+        self.op = op
+
+class CmpNode(Node):
+    type='cmp'
+    def __init__(self, op, jump, children):
+        Node.__init__(self, children)
+        self.op = op
+        self.jump = jump
+    
+    def __repr__(self):
+        return "cmp %s" % (repr(self.children))
     
 def addToClass(cls):
     ''' D�corateur permettant d'ajouter la fonction d�cor�e en tant que m�thode

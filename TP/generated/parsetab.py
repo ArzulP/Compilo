@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "leftMOVleftPUSHleftPOPADD_OP IDENTIFIER INC_OP MOV NEWLINE NUMBER POP PUSH programme : statement  programme : statement NEWLINE programme statement :  MOV varExpression ',' expressionstatement :  ADD_OP varExpression ',' expressionstatement :  INC_OP varExpressionstatement :  PUSH expressionstatement :  POP expressionvarExpression : IDENTIFIERexpression : NUMBER\n        | IDENTIFIER "
+_lr_signature = "leftMOVleftPUSHleftPOPleftCMPADD_OP CMP COND_OP IDENTIFIER INC_OP JUMP_OP MOV NEWLINE NUMBER POP PUSH programme : statement \n            | structure programme : statement NEWLINE programme statement :  MOV varExpression ',' expressionstatement :  ADD_OP varExpression ',' expressionstatement :  INC_OP varExpressionstatement :  PUSH expressionstatement :  POP expressionvarExpression : IDENTIFIERexpression : NUMBER\n        | IDENTIFIER structure : JUMP_OP ':' NEWLINE programme statement : CMP expression ',' expression NEWLINE COND_OP JUMP_OP "
     
-_lr_action_items = {'MOV':([0,8,],[3,3,]),'ADD_OP':([0,8,],[4,4,]),'INC_OP':([0,8,],[5,5,]),'PUSH':([0,8,],[6,6,]),'POP':([0,8,],[7,7,]),'$end':([1,2,10,12,13,14,15,16,17,20,21,],[0,-1,-8,-5,-6,-9,-10,-7,-2,-3,-4,]),'NEWLINE':([2,10,12,13,14,15,16,20,21,],[8,-8,-5,-6,-9,-10,-7,-3,-4,]),'IDENTIFIER':([3,4,5,6,7,18,19,],[10,10,10,15,15,15,15,]),'NUMBER':([6,7,18,19,],[14,14,14,14,]),',':([9,10,11,],[18,-8,19,]),}
+_lr_action_items = {'MOV':([0,11,26,],[4,4,4,]),'ADD_OP':([0,11,26,],[5,5,5,]),'INC_OP':([0,11,26,],[6,6,6,]),'PUSH':([0,11,26,],[7,7,7,]),'POP':([0,11,26,],[8,8,8,]),'CMP':([0,11,26,],[9,9,9,]),'JUMP_OP':([0,11,26,32,],[10,10,10,33,]),'$end':([1,2,3,13,15,16,17,18,19,22,27,28,30,33,],[0,-1,-2,-9,-6,-7,-10,-11,-8,-3,-4,-5,-12,-13,]),'NEWLINE':([2,13,15,16,17,18,19,21,27,28,29,33,],[11,-9,-6,-7,-10,-11,-8,26,-4,-5,31,-13,]),'IDENTIFIER':([4,5,6,7,8,9,23,24,25,],[13,13,13,18,18,18,18,18,18,]),'NUMBER':([7,8,9,23,24,25,],[17,17,17,17,17,17,]),':':([10,],[21,]),',':([12,13,14,17,18,20,],[23,-9,24,-10,-11,25,]),'COND_OP':([31,],[32,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'programme':([0,8,],[1,17,]),'statement':([0,8,],[2,2,]),'varExpression':([3,4,5,],[9,11,12,]),'expression':([6,7,18,19,],[13,16,20,21,]),}
+_lr_goto_items = {'programme':([0,11,26,],[1,22,30,]),'statement':([0,11,26,],[2,2,2,]),'structure':([0,11,26,],[3,3,3,]),'varExpression':([4,5,6,],[12,14,15,]),'expression':([7,8,9,23,24,25,],[16,19,20,27,28,29,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,13 +28,16 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> programme","S'",1,None,None,None),
   ('programme -> statement','programme',1,'p_programme_statement','parseur.py',7),
-  ('programme -> statement NEWLINE programme','programme',3,'p_programme_recursive','parseur.py',11),
-  ('statement -> MOV varExpression , expression','statement',4,'p_expression_mov','parseur.py',15),
-  ('statement -> ADD_OP varExpression , expression','statement',4,'p_expression_addOp','parseur.py',19),
-  ('statement -> INC_OP varExpression','statement',2,'p_expression_incOp','parseur.py',23),
-  ('statement -> PUSH expression','statement',2,'p_expression_push','parseur.py',27),
-  ('statement -> POP expression','statement',2,'p_expression_pop','parseur.py',31),
-  ('varExpression -> IDENTIFIER','varExpression',1,'p_expression_var','parseur.py',35),
-  ('expression -> NUMBER','expression',1,'p_expression_num_or_var','parseur.py',39),
-  ('expression -> IDENTIFIER','expression',1,'p_expression_num_or_var','parseur.py',40),
+  ('programme -> structure','programme',1,'p_programme_statement','parseur.py',8),
+  ('programme -> statement NEWLINE programme','programme',3,'p_programme_recursive','parseur.py',12),
+  ('statement -> MOV varExpression , expression','statement',4,'p_expression_mov','parseur.py',16),
+  ('statement -> ADD_OP varExpression , expression','statement',4,'p_expression_addOp','parseur.py',20),
+  ('statement -> INC_OP varExpression','statement',2,'p_expression_incOp','parseur.py',24),
+  ('statement -> PUSH expression','statement',2,'p_expression_push','parseur.py',28),
+  ('statement -> POP expression','statement',2,'p_expression_pop','parseur.py',32),
+  ('varExpression -> IDENTIFIER','varExpression',1,'p_expression_var','parseur.py',36),
+  ('expression -> NUMBER','expression',1,'p_expression_num_or_var','parseur.py',40),
+  ('expression -> IDENTIFIER','expression',1,'p_expression_num_or_var','parseur.py',41),
+  ('structure -> JUMP_OP : NEWLINE programme','structure',4,'p_structure','parseur.py',45),
+  ('statement -> CMP expression , expression NEWLINE COND_OP JUMP_OP','statement',7,'p_comparison','parseur.py',49),
 ]

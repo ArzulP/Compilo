@@ -35,7 +35,7 @@ def compile(self):
 def compile(self):
 	return "%s" % self.tok
 
-# vas interpréter les différentes oppérations
+# va interpréter les différentes oppérations
 # peut correspondre à une affectation ou une addition
 @addToClass(AST.OpNode)
 def compile(self):
@@ -73,6 +73,43 @@ def compile(self):
 
 	bytecode += ";\n"
 	return bytecode
+
+# interprétation des conditions de la boucle
+@addToClass(AST.JumpNode)
+def compile(self):
+	bytecode = ""
+	structure = "while("
+	cond = ""
+	for c in self.children:
+		if isinstance(c, AST.CmpNode) and c.jump == self.op:
+			if cond != "" :
+				cond += " || "
+			cond += c.compile()
+		else:
+			bytecode += c.compile()
+	structure += cond + ")\n{\n"
+	return structure + bytecode + "}"
+
+# interprétation de l'opérateur de comparaison
+@addToClass(AST.CmpNode)
+def compile(self):
+	bytecode = ""
+	bytecode += self.children[0].compile()
+	if self.op == "je":
+		bytecode += " == "
+	if self.op == "jne":
+		bytecode += " != "
+	if self.op == "jg":
+		bytecode += " > "
+	if self.op == "jge":
+		bytecode += " >= "
+	if self.op == "jl":
+		bytecode += " < "
+	if self.op == "jle":
+		bytecode += " <= "
+	bytecode += self.children[1].compile()
+	return bytecode
+
 	
 if __name__ == "__main__":
 	from parseur import parse

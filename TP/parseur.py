@@ -4,7 +4,8 @@ from lex import tokens
 import AST
 
 def p_programme_statement(p):
-    ''' programme : statement '''
+    ''' programme : statement 
+            | structure'''
     p[0] = AST.ProgramNode(p[1])
 
 def p_programme_recursive(p):
@@ -40,6 +41,14 @@ def p_expression_num_or_var(p):
         | IDENTIFIER '''
     p[0] = AST.TokenNode(p[1])
 
+def p_structure(p):
+    '''structure : JUMP_OP ':' NEWLINE programme '''
+    p[0] = AST.JumpNode(p[1], p[4].children)
+
+def p_comparison(p):
+    '''statement : CMP expression ',' expression NEWLINE COND_OP JUMP_OP '''
+    p[0] = AST.CmpNode(p[6], p[7], [p[2], p[4]])
+
 def p_error(p):
     if p:
         print ("Syntax error in line %d" % p.lineno)
@@ -52,6 +61,7 @@ precedence = (
     ('left', 'MOV'),
     ('left', 'PUSH'),
     ('left', 'POP'),
+    ('left', 'CMP'),
 )
 
 yacc.yacc(outputdir='generated')
