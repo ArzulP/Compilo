@@ -1,4 +1,0 @@
-eax = 2
-eax ++ 
-eax += 6
-ebx = eax

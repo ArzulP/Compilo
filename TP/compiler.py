@@ -5,11 +5,6 @@ from AST import addToClass
 vars = {}
 stack = []
 
-def whilecounter():
-	whilecounter.current += 1
-	return whilecounter.current
-whilecounter.current = 0
-
 # noeud de programme
 # retourne la suite d'opcodes de tous les enfants
 @addToClass(AST.ProgramNode)
@@ -23,7 +18,7 @@ def compile(self):
 # ne renvoit pas de code java, cette valeur de stack sera utilisée plus tard
 @addToClass(AST.PushNode)
 def compile(self):
-	stack.append(self.child.execute())
+	stack.append(self.child.compile())
 	return ""
 
 # affecte la valeur du stack à l'enfant
@@ -31,24 +26,15 @@ def compile(self):
 @addToClass(AST.PopNode)
 def compile(self):
 	bytecode = ""
-	vars[self.child.tok] = stack.pop()
-	bytecode += "%s = %s\n" % (self.child.tok, vars[self.child.tok])
-	return ""
+	popedValue = stack.pop()
+	bytecode += "%s = %s" % (self.child.tok, popedValue)
+	bytecode += ";\n"
+	return bytecode
 
 # renvoi
 @addToClass(AST.TokenNode)
 def compile(self):
 	return "%s" % self.tok
-
-@addToClass(AST.TokenNode)
-def execute(self):
-	if isinstance(self.tok, str):
-		if self.tok in vars:
-			return vars[self.tok]
-		else:
-			vars[self.tok] = 0
-			return 0
-	return self.tok
 
 # vas interpréter les différentes oppérations
 # peut correspondre à une affectation ou une addition
@@ -58,33 +44,29 @@ def compile(self):
 	bytecode += self.children[0].compile()
 	if self.op == "mov":
 		bytecode += " = "
-		vars[self.children[0].tok] = self.children[1].execute()
 
 	elif self.op == "add":
 		bytecode += " += "
-		vars[self.children[0].tok] += self.children[1].execute()
 
 	elif self.op == "sub":
 		bytecode += " -= "
-		vars[self.children[0].tok] -= self.children[1].execute()
 
 	bytecode += self.children[1].compile()
-	bytecode += "\n"
+	bytecode += ";\n"
 	return bytecode
 
+# correspond aux opération d'incrémentation et décrémentation
 @addToClass(AST.IncNode)
 def compile(self):
 	bytecode = ""
 	bytecode += self.child.compile()
 	if self.op == "inc":
 		bytecode += " ++ "
-		vars[self.child.tok] = vars[self.child.tok] + 1
 
 	elif self.op == "dec":
 		bytecode += " -- "
-		vars[self.child.tok] = vars[self.child.tok] - 1
 
-	bytecode += "\n"
+	bytecode += ";\n"
 	return bytecode
 	
 if __name__ == "__main__":
@@ -95,7 +77,7 @@ if __name__ == "__main__":
 	print(ast)
 	compiled = ast.compile()
 	print(compiled)
-	name = os.path.splitext(sys.argv[1])[0]+'.vm'
+	name = os.path.splitext(sys.argv[1])[0]+'.java'
 	outfile = open(name, 'w')
 	outfile.write(compiled)
 	outfile.close()
