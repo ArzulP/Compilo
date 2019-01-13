@@ -1,0 +1,6 @@
+push 5
+pop ebp
+inc ebp, 2
+mov esp, inc ebp
+add ebp, esp, 6
+mov 1, esp

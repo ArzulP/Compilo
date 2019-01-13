@@ -2,7 +2,6 @@
 import AST
 from AST import addToClass
 
-vars = {}
 stack = []
 
 # noeud de programme
@@ -51,6 +50,9 @@ def compile(self):
 	elif self.op == "sub":
 		bytecode += " -= "
 
+	elif self.op == "imul":
+		bytecode += " *= "
+
 	bytecode += self.children[1].compile()
 	bytecode += ";\n"
 	return bytecode
@@ -61,21 +63,25 @@ def compile(self):
 	bytecode = ""
 	bytecode += self.child.compile()
 	if self.op == "inc":
-		bytecode += " ++ "
+		bytecode += " ++"
 
 	elif self.op == "dec":
-		bytecode += " -- "
+		bytecode += " --"
+
+	elif self.op == "idiv":
+		bytecode += " /= eax"
 
 	bytecode += ";\n"
 	return bytecode
 	
 if __name__ == "__main__":
-	from parser1 import parse
+	from parseur import parse
 	import sys,os
 	prog = open(sys.argv[1]).read()
 	ast = parse(prog)
 	print(ast)
 	compiled = ast.compile()
+	print("Compiled output:")
 	print(compiled)
 	name = os.path.splitext(sys.argv[1])[0]+'.java'
 	outfile = open(name, 'w')

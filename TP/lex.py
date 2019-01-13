@@ -17,11 +17,11 @@ tokens = (
 literals = ','
 
 def t_ADD_OP(t):
-	r'(add|sub)'
+	r'(add|sub|imul)'
 	return t
 
 def t_INC_OP(t):
-	r'(inc|dec)'
+	r'(inc|dec|idiv)'
 	return t
 
 def t_NUMBER(t):

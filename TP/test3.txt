@@ -1,0 +1,11 @@
+push 20
+mov ebp, 10
+push ebp
+mov eax, 1
+mov ebx, 2
+add eax, ebx
+pop ebx
+imul eax, ebx
+pop ebx
+inc ebx
+idiv ebx

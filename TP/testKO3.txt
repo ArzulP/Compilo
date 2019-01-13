@@ -1,0 +1,4 @@
+mov eax, 2
+push eax
+add eax, 6
+pop ebx
